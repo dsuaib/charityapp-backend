@@ -20,5 +20,5 @@ app.get('/', (req, res) => {
 
 const port = process.env.PORT||5000;
 mongoose.connect(process.env.DATABASECONNECTION)
-.then(() => app.listen(port, () => console.log (`Database connected and server is running!: ${port}`)))
+.then(() => app.listen(port))
     
