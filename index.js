@@ -11,6 +11,9 @@ dotenv.config()
 app.use(express.json())
 app.use(cors())
 
+app.use('/app', routeUrls )
+
+
 app.get('/', (req, res) => {
     res.send('hello world')
 })
