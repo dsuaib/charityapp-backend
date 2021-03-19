@@ -1,2 +1,0 @@
-# charityapp-backend
-backend / testing
