@@ -10,7 +10,7 @@ dotenv.config()
 
 app.use(express.json())
 app.use(cors())
-
+const routeUrls = require('./routes')
 app.use('/app', routeUrls )
 
 
