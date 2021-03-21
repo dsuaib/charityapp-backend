@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 
 const registerMemberAccount = new mongoose.Schema({
+    
     firstName:{
         type:String,
         required:true
@@ -26,4 +27,6 @@ const registerMemberAccount = new mongoose.Schema({
     }
 })
 
-module.exports = mongoose.model('charitytable', registerMemberAccount)
+const GetRegisteredMember = mongoose.model('charitytable', registerMemberAccount, 'members')
+
+module.exports = mongoose.model('charitytable', registerMemberAccount, 'members')

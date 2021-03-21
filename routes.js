@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const registerMemberAccountCopy = require('./registerMemberModel')
+const GetRegisteredMember = require('./registerMemberModel')
 
 router.post('/registermember', (request, response) => {
     const registeredMember = new registerMemberAccountCopy({
@@ -18,6 +19,22 @@ router.post('/registermember', (request, response) => {
     .catch(error=>{
         response.json(error)
     })
+})
+
+router.get('/member', (req, res) => {
+    res.send('member')
+})
+
+router.get('/members', async (req, res) => {
+    const member = await GetRegisteredMember.find()
+    res.status(200).json(member)
+})
+
+router.get('/members/:id', async (req, res) => {
+    var id = req.params.id
+    const getmember = await GetRegisteredMember.findById(id)
+    res.status(200).json( getmember)
+    console.log(getmember)
 })
 
 
