@@ -13,6 +13,10 @@ const createAnnouncementSchema = new mongoose.Schema({
     message:{
         type:String,
         required:true
+    },
+    announcementDate:{
+    type:Date,
+    default:new Date()
     }
 })
 
