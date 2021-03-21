@@ -27,6 +27,4 @@ const registerMemberAccount = new mongoose.Schema({
     }
 })
 
-const GetRegisteredMember = mongoose.model('charitytable', registerMemberAccount, 'members')
-
-module.exports = mongoose.model('charitytable', registerMemberAccount, 'members')
+module.exports = mongoose.model('member', registerMemberAccount, 'members')
