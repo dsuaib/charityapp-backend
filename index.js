@@ -5,14 +5,15 @@ const dotenv = require('dotenv')
 const cors = require('cors')
 
 
+
 dotenv.config()
 
 
 app.use(express.json())
 app.use(cors())
+
 const routeUrls = require('./routes.js')
 app.use('/app', routeUrls )
-
 
 app.get('/', (req, res) => {
     res.send('hello world')
@@ -20,5 +21,6 @@ app.get('/', (req, res) => {
 
 const port = process.env.PORT||5000;
 mongoose.connect(process.env.DATABASECONNECTION)
-.then(() => app.listen(port, () => console.log (`Database connected and server is running!: ${port}`)))
+.then(() => app.listen(port))
+
     
