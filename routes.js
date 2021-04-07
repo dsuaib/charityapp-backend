@@ -2,6 +2,32 @@ const express = require('express')
 const router = express.Router()
 const createAnnouncementCopy = require('./createAnnouncementModel')
 const registerMemberAccountCopy = require('./registerMemberModel')
+const dotenv = require('dotenv')
+dotenv.config()
+const stripe = require("stripe")(process.env.PRIVATE_KEY)
+
+
+router.post("/donation", (req, res) =>{
+
+    const {product, token} = req.body;
+    console.log("product", product);
+    console.log("price", product.price);
+
+    return stripe.customers.create({
+        email:token.email,
+        source: token.id
+    }).then(customer => {
+        stripe.charges.create({
+            amount: product.price * 100,
+            currency:'usd',
+            customer: customer.id,
+            receipt_email: token.email
+        })
+    })
+    .then(result => res.status(200).json(result))
+    .catch(err => console.log(err))
+
+})
 
 router.post('/registermember', async (request, response) => {
     const registeredMember = new registerMemberAccountCopy({
@@ -20,6 +46,7 @@ router.post('/registermember', async (request, response) => {
         response.json(error)
     })
 })
+
 
 router.get('/member', (req, res) => {
     res.send('member')
