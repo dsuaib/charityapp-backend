@@ -3,6 +3,7 @@ const router = express.Router()
 const createAnnouncementCopy = require('./createAnnouncementModel')
 const registerMemberAccountCopy = require('./registerMemberModel')
 const dotenv = require('dotenv')
+const { restart } = require('nodemon')
 dotenv.config()
 const stripe = require("stripe")(process.env.PRIVATE_KEY)
 
@@ -47,6 +48,24 @@ router.post('/registermember', async (request, response) => {
     })
 })
 
+router.post('/login', function(req, res) {
+    var username = req.body.username;
+    var password = req.body.password;
+
+    User.findOne({username: username, password: password}, function(err, user) {
+        if(err) {
+            console.log(err)
+            return res.status(500).send();
+        }
+
+        if(!user) {
+            return res.status(404).send();
+        }
+
+        return res.status(200).json(user)
+    })
+})
+
 
 router.get('/member', (req, res) => {
     res.send('member')
@@ -60,11 +79,14 @@ router.get('/members', async (req, res) => {
 router.get('/members/:id', async (req, res) => {
     var id = req.params.id
     const getmember = await registerMemberAccountCopy.findById(id)
-    res.status(200).json( getmember)
+    res.status(200).json(getmember)
     console.log(getmember)
 })
 
 router.post('/createannouncement', async (request, response) => {
+    //can create function here to check if password exists in employee database
+    //if not return error if so, continue creating announcement
+    
     const createdAnnoucement = new createAnnouncementCopy({
         fullName:request.body.fullName,
         title:request.body.title,
