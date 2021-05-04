@@ -3,10 +3,11 @@ const router = express.Router()
 const createAnnouncementCopy = require('./createAnnouncementModel')
 const registerMemberAccountCopy = require('./registerMemberModel')
 const dotenv = require('dotenv')
+var nodemailer = require('nodemailer');
 const { restart } = require('nodemon')
+const { db } = require('./createAnnouncementModel')
 dotenv.config()
 const stripe = require("stripe")(process.env.PRIVATE_KEY)
-
 
 router.post("/donation", (req, res) =>{
 
@@ -51,8 +52,17 @@ router.post('/registermember', async (request, response) => {
 router.post('/login', function(req, res) {
     var username = req.body.username;
     var password = req.body.password;
+    
+    var myDocument= db.members.findOne();
 
-    User.findOne({username: username, password: password}, function(err, user) {
+    if (myDocument){
+        username = myDocument.username;
+        return res.status(200).json(myDocument)
+    }
+    
+    console.log('test')
+    
+    /*findOne({username: username, password: password}, function(err, user) {
         if(err) {
             console.log(err)
             return res.status(500).send();
@@ -63,7 +73,7 @@ router.post('/login', function(req, res) {
         }
 
         return res.status(200).json(user)
-    })
+    })*/
 })
 
 
@@ -112,6 +122,43 @@ router.get('/announcements/:id', async (req, res) => {
     res.status(200).json(getAnnouncement)
 })
 
+router.post('/email', (req, res) => {
+    var firstName = req.body.firstName;
+    var username = req.body.username;
+    var email = req.body.email;
+    var message = req.body.message;
 
+    let transporter = nodemailer.createTransport({
+        host: 'smtp.gmail.com',
+        port: 465,
+        secure: true,
+        auth: {
+            user: 'ait715casestudy@gmail.com',
+            pass: 'Dummypa$$word'
+        }
+    })
+
+    var messageDetails = ` ${firstName} has sent you a message! \n 
+    Their username is: ${username} \n 
+    Their email is: ${email} \n 
+    ${message}`
+
+      var mailOptions = {
+          from: '"Customer Service" <ait715casestudy@gmail.com>',
+          to: 'danisummer2000@gmail.com',
+          subject: 'COVID Charity App Message',
+          text: messageDetails
+      };
+
+      transporter.sendMail(mailOptions, function (error, info) {
+          if (err){
+          console.log(error)
+          }else console.log(info)
+          console.log('test1')
+      })
+      
+      res.sendStatus(200)
+      
+  })
 
 module.exports = router
