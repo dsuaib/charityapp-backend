@@ -123,8 +123,25 @@ router.post('/createannouncement', async (request, response) => {
          res.status(200).json({message: 'Announcement Successfully Deleted!'})
       })
       .catch(error => console.error(error))
-      console.log(`${req.body.title}`)
+      
   }) 
+
+  router.post('/updateannouncement', async (req, res) => {
+
+    var passedOldTitle = req.body.oldTitle
+    var passedfullName = req.body.fullName
+    var passedTitle = req.body.title
+    var passedMessage = req.body.message
+
+
+    const announcements = await createAnnouncementCopy.updateOne( { title: passedOldTitle }, { $set: {fullName: passedfullName, title: passedTitle, message: passedMessage} } )
+      .then(result => {
+
+         res.status(200).json({message: 'Announcement Successfully Updated!'})
+      })
+      .catch(error => console.error(error))
+  }) 
+
 
 
 router.get('/announcements', async (req, res) => {
@@ -167,8 +184,8 @@ router.post('/email', (req, res) => {
       transporter.sendMail(mailOptions, function (error, info) {
           if (err){
           console.log(error)
-          }else console.log(info)
-          console.log('test1')
+          }else res.status(200).json({message: 'Email Successfully sent!'})
+          
       })
       
       res.sendStatus(200)
