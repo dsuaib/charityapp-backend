@@ -5,7 +5,6 @@ const registerMemberAccountCopy = require('./registerMemberModel')
 const dotenv = require('dotenv')
 var nodemailer = require('nodemailer');
 const { restart } = require('nodemon')
-const { db } = require('./createAnnouncementModel')
 dotenv.config()
 const stripe = require("stripe")(process.env.PRIVATE_KEY)
 
@@ -112,6 +111,19 @@ router.post('/createannouncement', async (request, response) => {
         response.json(error)
     })
 })
+
+router.delete('/deleteannouncement', (req, res) => {
+
+    var passedTitle = req.body.title
+
+    const announcements = createAnnouncementCopy.deleteOne( { title: passedTitle } )
+      .then(result => {
+
+         res.status(200).json(req.body.title)
+      })
+      .catch(error => console.error(error))
+      console.log(`${req.body.title}`)
+  })
 
 router.get('/announcements', async (req, res) => {
     const announcements = await createAnnouncementCopy.find()
