@@ -50,14 +50,16 @@ router.post('/registermember', async (request, response) => {
 })
 
 router.post('/login', function(req, res) {
-    var username = req.body.username;
-    var password = req.body.password;
+    var user = req.body.username;
+    var userPassword = req.body.password;
     
-    var myDocument= db.members.findOne();
+    var myDocument = registerMemberAccountCopy.find( { username: 'gucciman'} )
+ 
 
-    if (myDocument){
-        username = myDocument.username;
-        return res.status(200).json(myDocument)
+    if (myDocument.username = user ){
+        return res.status(200).json(myDocument.username)
+    } else {
+        restart.status(400)
     }
     
     console.log('test')
@@ -124,7 +126,6 @@ router.get('/announcements/:id', async (req, res) => {
 
 router.post('/email', (req, res) => {
     var firstName = req.body.firstName;
-    var username = req.body.username;
     var email = req.body.email;
     var message = req.body.message;
 
@@ -139,7 +140,6 @@ router.post('/email', (req, res) => {
     })
 
     var messageDetails = ` ${firstName} has sent you a message! \n 
-    Their username is: ${username} \n 
     Their email is: ${email} \n 
     ${message}`
 
