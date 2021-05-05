@@ -112,18 +112,20 @@ router.post('/createannouncement', async (request, response) => {
     })
 })
 
-router.delete('/deleteannouncement', (req, res) => {
+
+  router.delete('/removeannouncement', async (req, res) => {
 
     var passedTitle = req.body.title
 
-    const announcements = createAnnouncementCopy.deleteOne( { title: passedTitle } )
+    const announcements = await createAnnouncementCopy.deleteOne( { title: passedTitle } )
       .then(result => {
 
-         res.status(200).json(req.body.title)
+         res.status(200).json({message: 'Announcement Successfully Deleted!'})
       })
       .catch(error => console.error(error))
       console.log(`${req.body.title}`)
-  })
+  }) 
+
 
 router.get('/announcements', async (req, res) => {
     const announcements = await createAnnouncementCopy.find()
