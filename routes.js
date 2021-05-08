@@ -26,6 +26,10 @@ router.post("/donation", (req, res) =>{
         })
     })
     .then(result => res.status(200).json(result))
+          .then(result => {
+
+         res.status(200).json({message: 'Donation Successfully processed!'})
+      })
     .catch(err => console.log(err))
 
 })
