@@ -1,6 +1,3 @@
 # charityapp-backend
-backend / testing
 
-potential issues
-'.js'
-await async
+backend code for Deployed charity application that uses StripeJS and Firebase authentication (https://aitcasestudyfrontend.herokuapp.com/)
